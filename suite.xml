@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tag" parallel="none" allow-return-values="true" >
+  <test name="OcularConfigTest">
+    <classes>
+      <class name="com.testautomationguru.ocular.OcularConfigTest"/>
+    </classes>
+  </test>
+  <test name="OcularTest">
+    <classes>
+      <class name="com.testautomationguru.ocular.OcularTest"/>
+    </classes>
+  </test>
+</suite> <!-- Suite -->
