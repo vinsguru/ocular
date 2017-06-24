@@ -19,9 +19,9 @@ Place below artifact configuration into Maven dependencies just below your `sele
 * *similarity* - how similar the sample should be while comparing against snapshot.
 
 
-# Configuration
+# Global Configuration:
 
-Following global configuration should be done before using Ocular. 
+Ocular expects the user to configure the following properties before doing the visual validation.
 
 
 |===
@@ -46,6 +46,7 @@ Following global configuration should be done before using Ocular.
 |===
 
 == Configuration code example
+Update Ocular global configuration as shown here once – for ex: in your `@BeforeSuite` method.
 
 [source,java,indent=0]
 ----
@@ -57,6 +58,7 @@ Ocular.config()
 	.saveSnapshot(false);
 
 ----
+*Note:* Ocular does NOT create these directories. Please ensure that they are present.
 
 == Snapshot in Page Objects
 
@@ -101,6 +103,8 @@ public class RichFace {
 ----
 
 Now *Ocular* looks for the snapshot image at this location - `c:/ocular/snpshot/RichFace.png` - (`snapshotPath + Path given in @Snap`)- in order to do the visual validation.
+
+ *Note: If the image is not present in the location, Ocular creates image and place it under snapshot path. So that Ocular can use this image from the next run onward for comparison.*
 
 [qanda]
 What happens if the snapshot image is not present?::
@@ -154,7 +158,7 @@ Ocular.snapshot()
 	.from(Paths.get("/path/of/the/image"))
 ----
 
-== Using Dynamic Snapshots
+== Choosing Right Snapshots at Run Time
 
 Class is a template. Objects are instances. How can we use a hardcoded value for `@Snap` of a Page Class for different instances? 
 What if we need to use different baseline images for different instances?
@@ -313,3 +317,48 @@ result.isEqualImages() // true or false
 == Sample Diff Image  
 
 image::src/test/resources/image-compare/RichFaces-Poll.png[RichFace,800,700]
+
+== Responsive Web Design Testing
+Ocular can also be used to test the responsive web design of your application.
+
+To the responsive web design, Lets organize our snapshots in our test framework as shown here.
+
+----
+src
+    test
+        resources
+            ocular
+                iphone
+                    PageA.png
+                    PageB.png
+                    PageC.png
+                ipad
+                    PageA.png
+                    PageB.png
+                    PageC.png
+                galaxy-tab
+                    PageA.png
+                    PageB.png
+                    PageC.png                  
+                1280x1024
+                    PageA.png
+                    PageB.png
+                    PageC.png   
+----
+
+Lets update the Ocular global config with the path where Ocular should expect the snapshots for the visual validation.
+[source,java,indent=0]
+----
+String device = "ipad";
+Path path = Paths.get(".", "src/test/resources/ocular/", device);
+Ocular.config().snapshotPath(path);
+ 
+ 
+// now Ocular will use the PageB.png under ipad folder.                
+@Snap(value="PageB.png")
+public class PageB {
+  
+}
+----
+
+Now as shown above we could easily incorporate the responsive web design validation in our test framework.
