@@ -1,31 +1,25 @@
 package com.testautomationguru.ocular.sample;
 
+import com.testautomationguru.ocular.comparator.*;
+import com.testautomationguru.ocular.exception.OcularException;
+import com.testautomationguru.ocular.snapshot.SnapshotAttributes;
+import org.openqa.selenium.*;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import com.testautomationguru.ocular.comparator.ImageUtil;
-import com.testautomationguru.ocular.comparator.OcularComparator;
-import com.testautomationguru.ocular.comparator.OcularResult;
-import com.testautomationguru.ocular.exception.OcularException;
-import com.testautomationguru.ocular.snapshot.SnapshotAttributes;
+import java.util.*;
 
 public class SampleBuilderImpl implements SampleBuilder {
 
     private WebDriver driver;
     private BufferedImage sample;
     private List<WebElement> exclusionList = new LinkedList<WebElement>();
-    private SnapshotAttributes sanpshotAttribute;
+    private SnapshotAttributes snapshotAttributes;
 
     public SampleBuilderImpl(SnapshotAttributes snapshotAttributes) {
-        this.sanpshotAttribute = snapshotAttributes;
+        this.snapshotAttributes = snapshotAttributes;
     }
 
     public SampleBuilder using(WebDriver driver) {
@@ -58,7 +52,7 @@ public class SampleBuilderImpl implements SampleBuilder {
     }
 
     public SampleBuilder similarity(int cutoff) {
-        this.sanpshotAttribute.setSimilarity(cutoff);
+        this.snapshotAttributes.setSimilarity(cutoff);
         return this;
     }
 
@@ -66,7 +60,7 @@ public class SampleBuilderImpl implements SampleBuilder {
         if(null==this.sample){
             this.sample =ImageUtil.getPageSnapshot(this.driver);
         }
-        return OcularComparator.compare(this.sanpshotAttribute, this.sample, this.exclusionList);
+        return OcularComparator.compare(this.snapshotAttributes, this.sample, this.exclusionList);
     }
 
 }

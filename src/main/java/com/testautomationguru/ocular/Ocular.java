@@ -1,34 +1,36 @@
 package com.testautomationguru.ocular;
 
+import com.testautomationguru.ocular.snapshot.*;
+
 import java.nio.file.Path;
-import com.testautomationguru.ocular.snapshot.SnapshotBuilder;
-import com.testautomationguru.ocular.snapshot.SnapshotBuilderImpl;
 
 public class Ocular {
 
-    public static SnapshotBuilder snapshot(){
+    public static SnapshotBuilder snapshot() {
         return new SnapshotBuilderImpl();
     }
-    
-    public static OcularConfiguration config(){     
+
+    public static OcularConfiguration config() {
         return OcularConfigImpl.get();
     }
-    
-    private static class OcularConfigImpl implements OcularConfiguration{
-     
+
+    private static class OcularConfigImpl implements OcularConfiguration {
+
         private static final OcularConfiguration config = new OcularConfigImpl();
-        
-        private Path snapshotpath; 
+
+        private Path snapshotpath;
         private Path resultpath;
         private int similarity = 100;
         private boolean savesnapshot = true;
-        
-        private OcularConfigImpl() {};
-        
-        public static OcularConfiguration get(){
+
+        private OcularConfigImpl() {
+        }
+
+
+        public static OcularConfiguration get() {
             return config;
         }
-        
+
         public OcularConfiguration snapshotPath(Path path) {
             this.snapshotpath = path;
             return this;
@@ -70,6 +72,6 @@ public class Ocular {
             this.resultpath = null;
             this.similarity = 100;
             this.savesnapshot = true;
-        }        
+        }
     }
 }

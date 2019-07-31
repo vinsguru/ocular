@@ -1,23 +1,16 @@
 package com.testautomationguru.ocular.comparator;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import com.testautomationguru.ocular.exception.OcularException;
+import org.arquillian.rusheye.oneoff.ImageUtils;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.*;
 
 import javax.imageio.ImageIO;
-
-import org.arquillian.rusheye.oneoff.ImageUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import com.testautomationguru.ocular.exception.OcularException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.List;
+import java.util.*;
 
 public class ImageUtil {
 
@@ -36,7 +29,17 @@ public class ImageUtil {
     }
 
     public static BufferedImage getElementSnapshot(WebDriver driver, WebElement element) {
-        Point p = element.getLocation();
+        Point p;
+        try {
+            Map bounding = (Map) ((JavascriptExecutor) driver).executeScript("return arguments[0].getBoundingClientRect()", element);
+            int x = ((Number) bounding.get("x")).intValue();
+            int y = ((Number) bounding.get("y")).intValue();
+            p = new Point(x, y);
+        } catch (ClassCastException e) {
+            //falling back to WebElement::getLocation
+            p = element.getLocation();
+        }
+
         int width = element.getSize().getWidth();
         int height = element.getSize().getHeight();
         return getPageSnapshot(driver).getSubimage(p.getX(), p.getY(), width, height);
@@ -73,5 +76,4 @@ public class ImageUtil {
 
         return img;
     }
-
 }

@@ -3,15 +3,23 @@ package com.testautomationguru.ocular;
 import java.nio.file.Path;
 
 public interface OcularConfiguration {
-    
-    public OcularConfiguration snapshotPath(Path path);
-    public OcularConfiguration resultPath(Path path);
-    public OcularConfiguration globalSimilarity(int cutoff);
-    public OcularConfiguration saveSnapshot(boolean save);
-    public Path getSnapshotPath();
-    public Path getResultPath();
-    public int getGlobalSimilarity();
-    public boolean canSaveSnapshot();
-    public void reset();
+
+    OcularConfiguration snapshotPath(Path path);
+
+    OcularConfiguration resultPath(Path path);
+
+    OcularConfiguration globalSimilarity(int cutoff);
+
+    OcularConfiguration saveSnapshot(boolean save);
+
+    Path getSnapshotPath();
+
+    Path getResultPath();
+
+    int getGlobalSimilarity();
+
+    boolean canSaveSnapshot();
+
+    void reset();
 
 }
