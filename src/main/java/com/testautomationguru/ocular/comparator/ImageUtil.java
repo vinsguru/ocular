@@ -18,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.testautomationguru.ocular.exception.OcularException;
+import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class ImageUtil {
 
@@ -25,7 +27,9 @@ public class ImageUtil {
     private final static Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     public static BufferedImage getPageSnapshot(WebDriver driver) {
-        File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        Augmenter augmenter = new Augmenter();
+        TakesScreenshot ts = (TakesScreenshot) augmenter.augment(driver);
+        File screen = ts.getScreenshotAs(OutputType.FILE);
         BufferedImage page = null;
         try {
             page = ImageIO.read(screen);
